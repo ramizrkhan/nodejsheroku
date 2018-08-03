@@ -5,6 +5,7 @@ var app = express();
 var mongoose = require('mongoose');
 var setupController = require('./controllers/setUpController');
 var apiController = require('./controllers/apiController');
+var abcServices = require('./controllers/abc_Services');
 
 const path = require('path')
 const PORT = process.env.PORT || 5000
@@ -20,13 +21,26 @@ const PORT = process.env.PORT || 5000
 
 //get databaseConnection
 mongoose.connect(config.getDBConnectionString());
-app.set('views', path.join(__dirname, 'views'));
+
+// Singlie folder View 
+// app.set('views', path.join(__dirname, 'views'));
+
+// Multiple directory structure view joining 
+app.set('views', [path.join(__dirname, 'views'),
+path.join(__dirname, 'views/abc/'), 
+path.join(__dirname, 'views/series/')]);
+
+
+
 app.set('view engine', 'ejs');
 app.get('/', (req, res) => res.render('pages/index'));
 
 
+
+
 setupController(app);
 apiController(app);
+abcServices(app)  
 
 app.use(function(req, res, next){
   res.status(404);
