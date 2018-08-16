@@ -6,6 +6,8 @@ var mongoose = require('mongoose');
 var setupController = require('./controllers/setUpController');
 var apiController = require('./controllers/apiController');
 var abcServices = require('./controllers/abc_Services');
+var validator = require('express-validator');
+
 
 const path = require('path')
 const PORT = process.env.PORT || 5000
@@ -33,6 +35,8 @@ path.join(__dirname, 'views/series/')]);
 
 
 app.set('view engine', 'ejs');
+app.engine('html', require('ejs').renderFile);
+
 app.get('/', (req, res) => res.render('pages/index'));
 
 
@@ -41,6 +45,7 @@ app.get('/', (req, res) => res.render('pages/index'));
 setupController(app);
 apiController(app);
 abcServices(app)  
+
 
 app.use(function(req, res, next){
   res.status(404);

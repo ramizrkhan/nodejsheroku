@@ -1,0 +1,73 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">  </script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script>  
+
+serviceCall = function (component) {
+  var requestData = {};
+  var request = {};
+  var requestParam = [];
+ var ServiceName ="";
+
+  if (component == "registration") {
+    ServiceName="SubmitRegistration";
+
+
+    name = $("#name").val();
+    email = $("#email").val();
+    country = $("#country").val();
+    password = $("#pwd").val();
+
+    requestParam.push({
+      "k": 'name',
+      'v': name
+    });
+    requestParam.push({
+      "k": 'email',
+      'v': email
+    });
+    requestParam.push({
+      "k": 'country',
+      'v': country
+    });
+    requestParam.push({
+      "k": 'password',
+      'v': password
+    });
+    request["ServiceName"]= ServiceName;
+    request["params"] = requestParam;
+    requestData["data"] = request;
+
+    donetwork(ServiceName, requestData);
+  }
+
+}
+
+donetwork = function (ServiceName, requestData) {
+  $.post(ServiceName, requestData, function (data) {
+
+    // alert(JSON.stringify( data.data.success  ));
+    if (data.data.success == "true") { //Service Success
+      swal(JSON.stringify( data.data.output));
+    }else if(data[0].location == "body" && data[0].msg.length>0){ //validation Error 
+      swal( data[0].msg);
+
+    }else { //Service Error
+      swal( "Service Error");
+
+    }
+  });
+}</script>
+<body>
+<%
+getPriceChgArrow = function() {
+ 
+    return "arrow_img_name";
+}
+%>
+
+
+
+
+
+</body>
