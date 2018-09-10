@@ -47,7 +47,19 @@ module.exports = function (app) {
         var errors = req.validationErrors();
         // console.log(errors);
         if (errors) {
-            res.send(errors);   
+            // res.send(errors);   
+            var errorsData = {};
+            var success = {};
+            var output = [];
+
+              success["service"]=req.body.data.ServiceName;
+              success["success"]="false";
+
+              success["output"] =errors;
+              errorsData["data"] = success;
+
+              res.send(errorsData);
+            //   console.log(errorsData);
 
             return;
         } else {

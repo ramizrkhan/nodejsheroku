@@ -20,6 +20,7 @@
     "express-json-validator-middleware": "^1.2.3",
     "express-session": "^1.15.6",
     "express-validator": "^5.3.0",
+    "helmet": "^3.13.0",
     "mongoose": "^5.0.15",
     "popups": "^1.1.3"
   }

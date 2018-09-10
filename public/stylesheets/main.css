@@ -98,3 +98,10 @@ input[type=submit] {
 .BG{
   background-color: rgb(3, 114, 116);
 }
+.venrability_{
+  position: fixed;
+  right: 0;
+    bottom: 0;
+  max-width:100%;
+  text-align: right;
+}

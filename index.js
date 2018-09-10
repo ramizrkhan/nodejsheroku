@@ -2,6 +2,8 @@ const cool = require('cool-ascii-faces')
 var express = require('express')
 var config = require('./config');
 var app = express();
+const helmet = require('helmet')
+
 var mongoose = require('mongoose');
 var setupController = require('./controllers/setUpController');
 var apiController = require('./controllers/apiController');
@@ -14,7 +16,8 @@ const PORT = process.env.PORT || 5000
 
 // app.use('./assets', express.static(path.join(__dirname, '/public')));
 // express()
-  app.use(express.static(path.join(__dirname, 'public')))
+  app.use(express.static(path.join(__dirname, 'public')));
+  app.use(helmet());
 //   .set('views', path.join(__dirname, 'views'))
 //   .set('view engine', 'ejs')
 //   .get('/', (req, res) => res.render('pages/index'))

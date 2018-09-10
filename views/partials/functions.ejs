@@ -45,12 +45,11 @@ serviceCall = function (component) {
 
 donetwork = function (ServiceName, requestData) {
   $.post(ServiceName, requestData, function (data) {
-
-    // alert(JSON.stringify( data.data.success  ));
     if (data.data.success == "true") { //Service Success
-      swal(JSON.stringify( data.data.output));
-    }else if(data[0].location == "body" && data[0].msg.length>0){ //validation Error 
-      swal( data[0].msg);
+      swal(data.data.output[0].v);
+    }else if(data.data.success=="false" && data.data.output.length>0){ //validation Error 
+      // swal( data.data.success);
+      swal( data.data.output[0].msg);
 
     }else { //Service Error
       swal( "Service Error");
