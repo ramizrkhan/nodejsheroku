@@ -53,7 +53,9 @@ abcServices(app)
 
 app.use(function(req, res, next){
   res.status(404);
-
+  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  res.header('Expires', '-1');
+  res.header('Pragma', 'no-cache');
   // respond with html page
   if(req.accepts('html')) {
       res.render('errors/404', {error: 'The resource you where looking for is not available.'});
