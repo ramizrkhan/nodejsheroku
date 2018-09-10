@@ -3,7 +3,7 @@ var express = require('express')
 var config = require('./config');
 var app = express();
 const helmet = require('helmet')
-
+var Security = require('./config/common');
 var mongoose = require('mongoose');
 var setupController = require('./controllers/setUpController');
 var apiController = require('./controllers/apiController');
@@ -41,7 +41,8 @@ path.join(__dirname, 'views/series/')]);
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
-app.get('/', (req, res) => res.render('pages/index'));
+app.get('/', (req, res) =>
+ res.render('pages/index'));
 
 
 
@@ -53,9 +54,8 @@ abcServices(app)
 
 app.use(function(req, res, next){
   res.status(404);
-  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-  res.header('Expires', '-1');
-  res.header('Pragma', 'no-cache');
+
+ res= Security.security(res);
   // respond with html page
   if(req.accepts('html')) {
       res.render('errors/404', {error: 'The resource you where looking for is not available.'});
@@ -71,6 +71,9 @@ app.use(function(req, res, next){
   res.type('txt').send('The resource you where looking for is not available.');
 });
 app.use(function(err, req, res, next){
+  // res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  // res.header('Expires', '-1');
+  // res.header('Pragma', 'no-cache');
   console.log(err);
   // we may use properties of the error object
   // here and next(err) appropriately, or if
@@ -80,6 +83,8 @@ app.use(function(err, req, res, next){
 
   // respond with html page
   if(req.accepts('html')) {
+    res= Security.security(res);
+
       res.render('errors/500.html', {error: 'Something is broken on our end, email us if this issue persist.'});
       return;
   }

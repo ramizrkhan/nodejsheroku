@@ -1,5 +1,6 @@
 var bodyparser = require('body-parser');
 var validator = require('express-validator'); // for form validationvar popupS = require('popups');
+var Security = require('../config/common');
 
 
 
@@ -29,14 +30,20 @@ module.exports = function (app) {
     }));
 
     app.get('/abcServices', function (req, res) {
+        res= Security.security(res);
+
         res.send("users");
     });
 
     app.get('/registration', function (req, res) {
+        res= Security.security(res);
+
         res.render('abcAppView/registration');
         // console.log("abcAppView/registration");
     });
     app.post('/SubmitRegistration', function (req, res) {
+        res= Security.security(res);
+
        console.log(JSON.stringify( req.body.data.ServiceName));
         req.checkBody("data.params[0].v", 'Please Enter Your Name.').notEmpty();
         req.checkBody("data.params[1].v", 'Please Enter a valid email address.').isEmail();
@@ -87,6 +94,8 @@ module.exports = function (app) {
     });
 
     app.get('/registredUsersView', function (req, res) {
+        res= Security.security(res);
+
         res.render('abcAppView/registredUsersView');
         console.log("abcAppView/registredUsersView");
 

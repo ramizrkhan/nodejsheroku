@@ -1,8 +1,11 @@
 
 var User = require('../models/userModel');
+var Security = require('../config/common');
 
 module.exports =function(app){
     app.get('/api/setupUser',function(req,res){
+        res= Security.security(res);
+
         console.log(req.path);
         //seed data
         var starterUser = [
