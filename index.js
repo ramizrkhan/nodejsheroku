@@ -18,6 +18,7 @@ const PORT = process.env.PORT || 5000
 // express()
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(helmet());
+  app.disable('x-powered-by');
 //   .set('views', path.join(__dirname, 'views'))
 //   .set('view engine', 'ejs')
 //   .get('/', (req, res) => res.render('pages/index'))
