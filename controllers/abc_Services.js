@@ -92,11 +92,79 @@ module.exports = function (app) {
         }
 
     });
+    app.get('/workerApi/login', function (req, res) {
+    //     res= Security.security(res);
+console.log("workerApi/login");
+var successData = {};
+        var success = {};
+        var output = [];
 
-    app.get('/registredUsersView', function (req, res) {
+
+        output.push({
+            "k": 'Name',
+            'v': "Ramiz"
+          })
+      
+
+          success["service"]="workerApi/login";
+          success["success"]="true";
+
+          success["output"] = output;
+          successData["data"] = success;
+
+          res.send(successData);
+
+    //    console.log(JSON.stringify( req.body.data.ServiceName));
+    //     req.checkBody("data.params[0].v", 'Please Enter Your Name.').notEmpty();
+    //     req.checkBody("data.params[1].v", 'Please Enter a valid email address.').isEmail();
+    //     req.checkBody("data.params[2].v", 'Please select a country.').notEmpty();
+    //     req.checkBody("data.params[3].v", 'Please Enter Password.').notEmpty();
+
+
+    //     var errors = req.validationErrors();
+    //     // console.log(errors);
+    //     if (errors) {
+    //         // res.send(errors);   
+    //         var errorsData = {};
+    //         var success = {};
+    //         var output = [];
+
+    //           success["service"]=req.body.data.ServiceName;
+    //           success["success"]="false";
+
+    //           success["output"] =errors;
+    //           errorsData["data"] = success;
+
+    //           res.send(errorsData);
+    //         //   console.log(errorsData);
+
+    //         return;
+    //     } else {
+    //         var successData = {};
+    //         var success = {};
+    //         var output = [];
+
+
+    //         output.push({
+    //             "k": 'Name',
+    //             'v': "Ramiz"
+    //           })
+          
+
+    //           success["service"]=req.body.data.ServiceName;
+    //           success["success"]="true";
+
+    //           success["output"] = output;
+    //           successData["data"] = success;
+
+    //           res.send(successData);
+
+    //     }
+
+    });
+    app.get('/registredUsersView', function (req, res,data) {
         res= Security.security(res);
-
-        res.render('abcAppView/registredUsersView');
+        res.render('abcAppView/registredUsersView',{data:data});
         console.log("abcAppView/registredUsersView");
 
     });
