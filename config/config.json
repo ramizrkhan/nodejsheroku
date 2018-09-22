@@ -1,4 +1,6 @@
 {
     "user":"dbuser",
-    "password":"admin1"
+    "password":"admin1",
+    "userWorker":"workerapiadmin",
+    "passwordWorker":"qwerty%40123"
 }

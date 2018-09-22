@@ -37,7 +37,7 @@ serviceCall = function (component) {
     request["ServiceName"]= ServiceName;
     request["params"] = requestParam;
     requestData["data"] = request;
-
+console.log(JSON.stringify(requestData));
     donetwork(ServiceName, requestData);
   }
 
