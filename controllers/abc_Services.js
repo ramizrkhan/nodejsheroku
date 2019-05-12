@@ -272,6 +272,17 @@ module.exports = function (app) {
                             // res.setHeader('Content-disposition', 'inline; filename="' + "Script.pdf" + '"');// view in browser
                             res.send(data);
                         });
+
+                        fs.unlink(file,  function (err) {
+                            if (err) throw err;
+                            // if no error, file has been deleted successfully
+                            console.log('Input File deleted!');
+                            fs.unlink(output,  function (err) {
+                                if (err) throw err;
+                                // if no error, file has been deleted successfully
+                                console.log('output File deleted!');
+                            });  
+                        });  
                     }
 
                 }
