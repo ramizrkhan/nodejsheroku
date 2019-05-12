@@ -31,21 +31,21 @@ module.exports = function (app) {
     }));
 
     app.get('/abcServices', function (req, res) {
-        res= commonFunctions.security(res);
+        res = commonFunctions.security(res);
 
         res.send("users");
     });
 
     app.get('/registration', function (req, res) {
-        res= commonFunctions.security(res);
+        res = commonFunctions.security(res);
 
         res.render('abcAppView/registration');
         // console.log("abcAppView/registration");
     });
     app.post('/SubmitRegistration', function (req, res) {
-        res= commonFunctions.security(res);
+        res = commonFunctions.security(res);
 
-       console.log(JSON.stringify( req.body.data.ServiceName));
+        console.log(JSON.stringify(req.body.data.ServiceName));
         req.checkBody("data.params[0].v", 'Please Enter Your Name.').notEmpty();
         req.checkBody("data.params[1].v", 'Please Enter a valid email address.').isEmail();
         req.checkBody("data.params[2].v", 'Please select a country.').notEmpty();
@@ -60,13 +60,13 @@ module.exports = function (app) {
             var success = {};
             var output = [];
 
-              success["service"]=req.body.data.ServiceName;
-              success["success"]="false";
+            success["service"] = req.body.data.ServiceName;
+            success["success"] = "false";
 
-              success["output"] =errors;
-              errorsData["data"] = success;
+            success["output"] = errors;
+            errorsData["data"] = success;
 
-              res.send(errorsData);
+            res.send(errorsData);
             //   console.log(errorsData);
 
             return;
@@ -79,30 +79,32 @@ module.exports = function (app) {
             output.push({
                 "k": 'Name',
                 'v': "Ramiz"
-              })
-          
+            })
 
-              success["service"]=req.body.data.ServiceName;
-              success["success"]="true";
 
-              success["output"] = output;
-              successData["data"] = success;
+            success["service"] = req.body.data.ServiceName;
+            success["success"] = "true";
 
-              res.send(successData);
+            success["output"] = output;
+            successData["data"] = success;
+
+            res.send(successData);
 
         }
 
     });
 
-    app.get('/registredUsersView', function (req, res,data) {
-        res= commonFunctions.security(res);
-        res.render('abcAppView/registredUsersView',{data:data});
+    app.get('/registredUsersView', function (req, res, data) {
+        res = commonFunctions.security(res);
+        res.render('abcAppView/registredUsersView', {
+            data: data
+        });
         console.log("abcAppView/registredUsersView");
 
     });
 
 
-// **********************************************************************************************************************
+    // **********************************************************************************************************************
     //Worker api Started from here
 
     app.post('/workerApi/registration', function (req, res, data) {
@@ -110,8 +112,8 @@ module.exports = function (app) {
 
         console.log("/workerApi/registration");
         var params = req.body.data.params;
-        var ServiceName =req.body.data.ServiceName;
-        var name,email,mobile, password;
+        var ServiceName = req.body.data.ServiceName;
+        var name, email, mobile, password;
         if (params.length > 0) {
             email = commonFunctions.getkeyValue(params, 'email');
             name = commonFunctions.getkeyValue(params, 'name');
@@ -159,7 +161,7 @@ module.exports = function (app) {
                     'value': user.email
                 });
                 res.send(commonFunctions.responseGenerator(ServiceName, "true", output, error));
-              
+
             }
         });
 
@@ -171,7 +173,7 @@ module.exports = function (app) {
 
         // console.log(JSON.stringify(req.body.data));
         var params = req.body.data.params;
-        var ServiceName =req.body.data.ServiceName;
+        var ServiceName = req.body.data.ServiceName;
         var email, password;
         if (params.length > 0) {
             email = commonFunctions.getkeyValue(params, 'email');
@@ -196,7 +198,6 @@ module.exports = function (app) {
                     res.send(commonFunctions.responseGenerator(ServiceName, "false", output, error));
 
                 } else if (!user) {
-                    //   var err = new Error('User not found.');
                     error.push({
                         'key': 'msg',
                         'value': "User not found."
@@ -204,7 +205,6 @@ module.exports = function (app) {
                     res.send(commonFunctions.responseGenerator(ServiceName, "false", output, error));
 
                 } else {
-                    // console.log(JSON.stringify( user.email));
                     output.push({
                         'key': 'email',
                         'value': user.email
@@ -218,5 +218,75 @@ module.exports = function (app) {
 
     });
 
+    // pdf manuplation
+    app.get('/uploadPDF', function (req, res, data) {
+        res = commonFunctions.security(res);
+        res.render('abcAppView/uploadPDF', {
+            data: data
+        });
+        console.log("abcAppView/uploadPDF");
 
-    }
+    });
+
+    var fs = require('fs');
+    var multer = require('multer');
+    var upload = multer({
+        dest: 'tmp/'
+    })
+    app.post('/api/pdfuplod', upload.single('file'), function (req, res) {
+        var file = __dirname + '/' + "tmp.pdf";
+        var output = __dirname + '/' + "output.pdf";
+        console.log(file);
+        console.log(req.file.path);
+        fs.rename(req.file.path, file, function (err) {
+            if (err) {
+                console.log(err);
+                res.send(500);
+            } else {
+
+
+                const HummusRecipe = require('hummus-recipe');
+                const pdfDoc = new HummusRecipe(file, __dirname + '/' + 'output.pdf');
+
+
+                var length = pdfDoc.metadata.pages;
+                console.log(length);
+                for (var i = 1; i <= length; i++) {
+                    pdfDoc
+
+                        .editPage(i)
+                        .text('Add some texts to an existing pdf file', 40, 40, {
+                            color: '000000',
+                            bold: true,
+
+                        })
+
+                        .endPage()
+
+                    if (i == length) {
+                        pdfDoc.endPDF();
+                        //Send PDF from Server     
+                        fs.readFile(output, function (err, data) {
+                            res.contentType("application/pdf");
+                            res.setHeader('Content-disposition', 'attachment; filename="' + "Script.pdf" + '"'); // dowload
+                            // res.setHeader('Content-disposition', 'inline; filename="' + "Script.pdf" + '"');// view in browser
+                            res.send(data);
+                        });
+                    }
+
+                }
+
+                //   res.json({
+                //     message: 'File uploaded successfully',
+                //     filename: req.file.filename
+
+                // });
+            }
+        });
+
+
+    });
+
+
+
+}

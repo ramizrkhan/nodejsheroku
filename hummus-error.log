@@ -1,0 +1,15 @@
+[ 12/05/2019 16:41:10 ] UnicodeString::FromUTF16BE, fault string - high surrogat encountered without a low surrogate
+[ 12/05/2019 16:43:52 ] UnicodeString::FromUTF16BE, fault string - high surrogat encountered without a low surrogate
+[ 12/05/2019 16:44:20 ] UnicodeString::FromUTF16BE, fault string - high surrogat encountered without a low surrogate
+[ 12/05/2019 16:54:46 ] UnicodeString::FromUTF16BE, fault string - high surrogat encountered without a low surrogate
+[ 12/05/2019 17:00:18 ] UnicodeString::FromUTF16BE, fault string - high surrogat encountered without a low surrogate
+[ 12/05/2019 17:04:43 ] UnicodeString::FromUTF16BE, fault string - high surrogat encountered without a low surrogate
+[ 12/05/2019 17:07:26 ] UnicodeString::FromUTF16BE, fault string - high surrogat encountered without a low surrogate
+[ 12/05/2019 17:13:45 ] UnicodeString::FromUTF16BE, fault string - high surrogat encountered without a low surrogate
+[ 12/05/2019 17:15:01 ] UnicodeString::FromUTF16BE, fault string - high surrogat encountered without a low surrogate
+[ 12/05/2019 17:16:32 ] UnicodeString::FromUTF16BE, fault string - high surrogat encountered without a low surrogate
+[ 12/05/2019 17:19:56 ] UnicodeString::FromUTF16BE, fault string - high surrogat encountered without a low surrogate
+[ 12/05/2019 17:20:39 ] UnicodeString::FromUTF16BE, fault string - high surrogat encountered without a low surrogate
+[ 12/05/2019 17:21:56 ] UnicodeString::FromUTF16BE, fault string - high surrogat encountered without a low surrogate
+[ 12/05/2019 17:22:29 ] UnicodeString::FromUTF16BE, fault string - high surrogat encountered without a low surrogate
+[ 12/05/2019 17:22:54 ] UnicodeString::FromUTF16BE, fault string - high surrogat encountered without a low surrogate
