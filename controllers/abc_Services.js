@@ -234,7 +234,8 @@ module.exports = function (app) {
         dest: 'tmp/'
     })
     app.post('/api/pdfuplod', upload.single('file'), function (req, res) {
-        var file = __dirname + '/' + "tmp.pdf";
+        if(req.file){
+            var file = __dirname + '/' + "tmp.pdf";
         var output = __dirname + '/' + "output.pdf";
         console.log(file);
         console.log(req.file.path);
@@ -252,15 +253,20 @@ module.exports = function (app) {
                 var length = pdfDoc.metadata.pages;
                 console.log(length);
                 for (var i = 1; i <= length; i++) {
+                    var pageHeight = pdfDoc.metadata[i].height;
                     pdfDoc
 
                         .editPage(i)
-                        .text('Add some texts to an existing pdf file', 40, 40, {
+                        .text('Softworx technologies', 40, 40, {
+                            color: '000000',
+                            bold: true,
+
+                        }) 
+                        .text('Softworx technologies', 40, pageHeight-20, {
                             color: '000000',
                             bold: true,
 
                         })
-
                         .endPage()
 
                     if (i == length) {
@@ -296,6 +302,17 @@ module.exports = function (app) {
         });
 
 
+    }else{
+        var output = [];
+        var error = [];
+        error.push({
+            'key': 'msg',
+            'value': "Please Select a File."
+        });
+     
+        res.send(commonFunctions.responseGenerator("pdfuplod", "false", output, error));
+
+    }
     });
 
 
