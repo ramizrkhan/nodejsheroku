@@ -221,8 +221,9 @@ module.exports = function (app) {
     // pdf manuplation
     app.get('/uploadPDF', function (req, res, data) {
         res = commonFunctions.security(res);
+      var  datad ="";
         res.render('abcAppView/uploadPDF', {
-            data: data
+            data: datad
         });
         console.log("abcAppView/uploadPDF");
 
@@ -234,6 +235,8 @@ module.exports = function (app) {
         dest: 'tmp/'
     })
     app.post('/api/pdfuplod', upload.single('file'), function (req, res) {
+        var dataerror = "";
+
         if(req.file){
             var file = __dirname + '/' + "tmp.pdf";
         var output = __dirname + '/' + "output.pdf";
@@ -247,6 +250,10 @@ module.exports = function (app) {
 
 
                 const HummusRecipe = require('hummus-recipe');
+                var hummus = require('hummus');
+                var pdfReader = hummus.createReader(file);
+                console.log(pdfReader.isEncrypted());
+                if(!pdfReader.isEncrypted()){  
                 const pdfDoc = new HummusRecipe(file, __dirname + '/' + 'output.pdf');
 
 
@@ -257,7 +264,7 @@ module.exports = function (app) {
                     pdfDoc
 
                         .editPage(i)
-                        .text('Softworx technologies', 40, 40, {
+                        .text('Softworx Technologies', 40, 40, {
                             color: '000000',
                             bold: true,
 
@@ -274,8 +281,8 @@ module.exports = function (app) {
                         //Send PDF from Server     
                         fs.readFile(output, function (err, data) {
                             res.contentType("application/pdf");
-                            res.setHeader('Content-disposition', 'attachment; filename="' + "Script.pdf" + '"'); // dowload
-                            // res.setHeader('Content-disposition', 'inline; filename="' + "Script.pdf" + '"');// view in browser
+                            // res.setHeader('Content-disposition', 'attachment; filename="' + "Script.pdf" + '"'); // dowload
+                            res.setHeader('Content-disposition', 'inline; filename="' + "Script.pdf" + '"');// view in browser
                             res.send(data);
                         });
 
@@ -298,8 +305,15 @@ module.exports = function (app) {
                 //     filename: req.file.filename
 
                 // });
+            }else{
+                dataerror = "PDF is increpted ";
+//                 res.render('abcAppView/uploadPDF',{  
+//                           data: dataerror
+// });
+res.end("PDF is increpted .");
             }
-        });
+        }
+    });
 
 
     }else{
@@ -307,7 +321,7 @@ module.exports = function (app) {
         var error = [];
         error.push({
             'key': 'msg',
-            'value': "Please Select a File."
+            'value': "Please choose a PDF."
         });
      
         res.send(commonFunctions.responseGenerator("pdfuplod", "false", output, error));
